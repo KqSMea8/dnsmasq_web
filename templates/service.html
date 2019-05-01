@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <!-- Meta, title, CSS, favicons, etc. -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>
+
+        Dnsmasq Web
+
+    </title>
+
+    <!-- Bootstrap core CSS -->
+
+    <link href="https://cdn.bootcdn.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <!-- Optional Bootstrap Theme -->
+
+    <link href="https://v3.bootcss.com/dist/css/bootstrap-theme.min.css" rel="stylesheet" id="bs-theme-stylesheet">
+
+
+
+    <!-- Documentation extras -->
+
+    <link href="https://v3.bootcss.com/assets/css/docs.min.css" rel="stylesheet">
+
+    <!-- Google Font -->
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+
+
+    <!-- DataTables  -->
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap.min.css">
+
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" href="/favicon.ico">
+
+
+</head>
+
+<body>
+    <a id="skippy" class="sr-only sr-only-focusable" href="#content">
+        <div class="container"><span class="skiplink-text">Skip to main content</span></div>
+    </a>
+
+    <!-- Docs master nav -->
+    <header class="navbar navbar-static-top bs-docs-nav" id="top">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar"
+                    aria-controls="bs-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href="../" class="navbar-brand">Dnsmasq</a>
+            </div>
+            <nav id="bs-navbar" class="collapse navbar-collapse">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/"
+                            onclick="_hmt.push(['_trackEvent', 'docv3-navbar', 'click', 'V3导航-JavaScript插件'])">Host管理</a>
+                    </li>
+                    <li class="active">
+                        <a href="/service"
+                            onclick="_hmt.push(['_trackEvent', 'docv3-navbar', 'click', 'V3导航-起步'])">服务管理</a>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+    </header>
+
+
+    <div class="container bs-docs-container">
+
+        <div class="row">
+            <div class="col-md-9" role="main">
+                <div class="bs-docs-section">
+                    <h3 id="js-overview" class="page-header">Host管理</h3>
+
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="box-tools pull-left">
+                                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+                                    data-target="#AddHostModal">添加
+                                </button>
+                            </div>
+                            <div class="box-tools pull-right">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="search" placeholder="search">
+                                    </div>
+                                    <button type="submit" id="btn-search"
+                                        class="btn btn-primary btn-search">search</button>
+                                </form>
+                            </div>
+                            <table id="user_table" class="table table-bordered" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th>域名</th>
+                                        <th>IP</th>
+                                        <th>备注</th>
+                                        <th>更新时间</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="bs-docs-section">
+                    <h3 id="modals" class="page-header">Host管理</h3>
+
+                    <div class="box">
+                        <div class="box-body">
+                            <div class="box-tools pull-left">
+                                <button type="button" class="btn btn-sm btn-primary" data-toggle="modal"
+                                        data-target="#AddHostModal">添加
+                                </button>
+                            </div>
+                            <div class="box-tools pull-right">
+                                <form class="form-inline">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" name="search" placeholder="search">
+                                    </div>
+                                    <button type="submit" id="btn-search"
+                                            class="btn btn-primary btn-search">search</button>
+                                </form>
+                            </div>
+                            <table id="user_table" class="table table-bordered" style="width:100%">
+                                <thead>
+                                <tr>
+                                    <th>域名</th>
+                                    <th>IP</th>
+                                    <th>备注</th>
+                                    <th>更新时间</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="col-md-3" role="complementary">
+                <nav class="bs-docs-sidebar hidden-print hidden-xs hidden-sm">
+                    <ul class="nav bs-docs-sidenav">
+
+                        <li>
+                            <a href="#js-overview">概览</a>
+                            <ul class="nav">
+                                <li><a href="#js-individual-compiled">单个还是全部引入</a></li>
+                                <li><a href="#js-data-attrs">data 属性</a></li>
+                                <li><a href="#js-programmatic-api">编程方式的 API</a></li>
+                                <li><a href="#js-noconflict">避免命名空间冲突</a></li>
+                                <li><a href="#js-events">事件</a></li>
+                                <li><a href="#js-version-nums">Version numbers</a></li>
+                                <li><a href="#js-disabled">浏览器的 JavaScript 被禁用的情况</a></li>
+                                <li><a href="#callout-third-party-libs">第三方工具库</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#transitions">过渡效果</a></li>
+                        <li>
+                            <a href="#modals">模态框</a>
+                            <ul class="nav">
+                                <li><a href="#modals-examples">实例</a></li>
+                                <li><a href="#modals-sizes">Sizes</a></li>
+                                <li><a href="#modals-remove-animation">Remove animation</a></li>
+                                <li><a href="#modals-related-target">Varying content based on trigger button</a></li>
+                                <li><a href="#modals-usage">用法</a></li>
+                                <li><a href="#modals-options">参数</a></li>
+                                <li><a href="#modals-methods">方法</a></li>
+                                <li><a href="#modals-events">事件</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                    <a class="back-to-top" href="#top">
+                        返回顶部
+                    </a>
+
+                </nav>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://cdn.bootcdn.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+
+    <script src="https://cdn.bootcdn.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"></script>
+
+    <script src="https://v3.bootcss.com/assets/js/docs.min.js"></script>
+
+
+    <!-- DataTables -->
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" language="javascript"
+        src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript" language="javascript" src="/static/js/dataTables.colReorder.min.js">
+    </script>
+
+    <!-- sweetalert 漂亮的弹窗口插件 -->
+    <script src="/static/js/sweetalert.min.js"></script>
+
+
+    <script>
+        if (location.pathname != '/') {
+            var tagObj = $('.sidebar-menu a[href^="/' + location.pathname.split("/")[1] + '/' + location.pathname.split(
+                "/")[
+                2] + '"]');
+            tagObj.parent().addClass('active');
+            tagObj.parent().parent().parent().addClass('menu-open')
+            tagObj.parent().parent().parent().addClass('active')
+        }
+        $(document).ready(function () {
+            $(window).scroll(function () {
+                if ($(this).scrollTop() > 50) {
+                    $('#back-to-top').fadeIn();
+                } else {
+                    $('#back-to-top').fadeOut();
+                }
+            });
+            // scroll body to 0px on click
+            $('#back-to-top').click(function () {
+                $('#back-to-top').tooltip('hide');
+                $('body,html').animate({
+                    scrollTop: 0
+                }, 800);
+                return false;
+            });
+            $('#back-to-top').tooltip('show');
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            var kw = $(".pull-right .form-inline input[name='search']").val()
+            console.log(kw)
+            var _table = $('#user_table').DataTable({
+                "serverSide": true, //启用服务器端分页
+                "searching": false, // 去掉搜索框
+                "orderClasses": false,
+                "bLengthChange": false,
+                "pagingType": "full_numbers",
+                "language": { // 汉化
+                    "sZeroRecords": "没有检索到数据",
+                    "sInfo": "当前显示第 _START_ 至 _END_ 项/共 _TOTAL_ 项",
+                    "sInfoEmpty": "没有数据",
+                    "sInfoFiltered": "(从 _MAX_ 条数据中检索)",
+                    "oPaginate": {
+                        "sFirst": "首页",
+                        "sPrevious": "上页",
+                        "sNext": "下页",
+                        "sLast": "末页",
+                    }
+                },
+                "ajax": function (data, callback, settings) {
+                    var params = {
+                        draw: data.draw,
+                        per_page: data.length,
+                        page: parseInt((data.start / data.length)) + 1,
+                        start: data.start,
+                        kw: $(".form-inline input[name='search']").val()
+                    }; // 每页多少个, 这第几页, 一共多少个
+                    $.ajax({
+                        url: "/api/hosts",
+                        type: "GET",
+                        cache: false, //禁用缓存
+                        data: params,
+                        dataType: "json",
+                        success: function (result) {
+                            var returnData = {};
+                            returnData.draw = data.draw; //这里直接自行返回了draw计数器,应该由后台返回
+                            returnData.recordsTotal = result.total; //返回数据全部记录
+                            returnData.recordsFiltered = result
+                                .total; //后台不实现过滤功能，每次查询均视作全部结果
+                            returnData.data = result.data; //返回的数据列表
+                            callback(returnData);
+                        }
+                    });
+                },
+                "columns": [{
+                        "data": "domain"
+                    },
+                    {
+                        "data": "ip"
+                    },
+                    {
+                        "data": "note"
+                    },
+                    {
+                        "data": "last_seen"
+                    },
+                    {
+                        "render": function (data, type, row) {
+                            if (row.status_id == 1) {
+                                var $btn =
+                                    ' <button type="button" class="btn btn-xs btn-success btn-status">' +
+                                    '状态切换' +
+                                    '</button>';
+                            } else if (row.status_id == 0) {
+                                var $btn =
+                                    ' <button type="button" class="btn btn-xs btn-warning btn-status">' +
+                                    '状态切换' +
+                                    '</button>';
+                            }
+                            return row.status + $btn;
+                        },
+                    },
+                    {
+                        className: "td-operation",
+                        data: null,
+                        defaultContent: "",
+                        orderable: false,
+                    }
+                ],
+                "createdRow": function (row) {
+                    //不使用render，改用jquery文档操作呈现单元格
+                    var $btnEdit = $(
+                        '<button type="button" class="btn btn-xs btn-primary btn-edit">修改</button>'
+                    );
+                    var $btnDel = $(
+                        '<button type="button" class="btn btn-xs btn-danger btn-del">删除</button>'
+                    );
+                    $('td', row).eq(5).append($btnEdit);
+                    $('td', row).eq(5).append("&ensp;");
+                    $('td', row).eq(5).append($btnDel);
+                },
+            });
+
+            // 修改
+            _table.on('click', '.btn-edit', function () {
+                $('#EditHostModal').modal('show');
+                var data = _table.row($(this).parents('tr')).data();
+                $("#EditHostModal input[name='id']").attr("value", data.id);
+                $("#EditHostModal input[name='domain']").attr("value", data.domain);
+                $("#EditHostModal input[name='ip']").attr("value", data.ip);
+                $("#EditHostModal input[name='note']").attr("value", data.note);
+            });
+
+            // 删除
+            _table.on('click', '.btn-del', function () {
+                var data = _table.row($(this).parents('tr')).data();
+                $.ajax({
+                    url: "/api/hosts/" + data.id,
+                    type: "DELETE",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.code == 0) {
+                            _table.ajax.reload();
+                        } else {
+                            swal({
+                                icon: "error",
+                                text: "删除失败! msg: " + result.msg,
+                                button: false,
+                            });
+                        }
+                    },
+                    error: function () {
+                        swal({
+                            icon: "error",
+                            text: "删除失败, code: -200",
+                            button: false,
+                        });
+                    }
+                });
+            });
+
+            // 状态切换
+            _table.on('click', '.btn-status', function () {
+                var data = _table.row($(this).parents('tr')).data();
+                if (data.status_id == 1) {
+                    new_status = 0
+                } else {
+                    new_status = 1
+                }
+                $.ajax({
+                    url: "/api/hosts/" + data.id,
+                    type: "PUT",
+                    data: {
+                        "domain": data.domain,
+                        "ip": data.ip,
+                        "note": data.note,
+                        "status": new_status,
+                    },
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.code == 0) {
+                            _table.ajax.reload();
+                        } else {
+                            swal({
+                                icon: "error",
+                                text: "更新失败! msg: " + result.msg,
+                                button: false,
+                            });
+                        }
+                    },
+                    error: function () {
+                        swal({
+                            icon: "error",
+                            text: "更新失败, code: -200",
+                            button: false,
+                        });
+                    }
+                });
+            });
+
+            // 检索
+            $('.form-inline .btn-search').on('click', function () {
+                _table.ajax.reload();
+            });
+        });
+
+
+        // 更新
+        $('.btn-update').click(function () {
+            console.log($("#EditHostModal input[name='id']").val())
+            $.ajax({
+                url: "/api/hosts/" + $("#EditHostModal input[name='id']").val(),
+                type: "PUT",
+                data: {
+                    "domain": $("#EditHostModal input[name='domain']").val(),
+                    "ip": $("#EditHostModal input[name='ip']").val(),
+                    "note": $("#EditHostModal input[name='note']").val(),
+                    "status": $("#EditHostModal select[name='status']").val(),
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        location.reload();
+                    } else {
+                        swal({
+                            icon: "error",
+                            text: "更新失败! msg: " + result.msg,
+                            button: false,
+                        });
+                    }
+                },
+                error: function () {
+                    swal({
+                        icon: "error",
+                        text: "更新失败, code: -200",
+                        button: false,
+                    });
+                }
+            });
+        });
+
+
+        // 新增
+        $('.btn-add').click(function () {
+            $.ajax({
+                url: "/api/hosts",
+                type: "POST",
+                data: {
+                    "domain": $("#AddHostModal input[name='domain']").val(),
+                    "ip": $("#AddHostModal input[name='ip']").val(),
+                    "note": $("#AddHostModal input[name='note']").val(),
+                    "status": $("#AddHostModal select[name='status']").val(),
+                },
+                dataType: "json",
+                success: function (result) {
+                    if (result.code == 0) {
+                        location.reload();
+                    } else {
+                        swal({
+                            icon: "error",
+                            text: "新增失败! msg: " + result.msg,
+                            button: false,
+                        });
+                    }
+                },
+                error: function () {
+                    swal({
+                        icon: "error",
+                        text: "新增失败, code: -200",
+                        button: false,
+                    });
+                }
+            });
+        });
+    </script>
+
+
+
+</body>
+
+</html>
