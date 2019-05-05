@@ -19,6 +19,12 @@ class HostsModel(db.Model):
         1: '禁用',
     }
 
+    # 声明排序方式
+    __mapper_args__ = {
+        "order_by": last_seen.desc()
+    }
+
+
     @staticmethod
     def add_host(attr_dict, *args, **kwargs):
         """
