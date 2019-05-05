@@ -109,7 +109,7 @@ def gen_hosts():
         for item in query
     ]
     basedir = os.path.abspath(os.path.dirname(__file__))
-    hosts_file = os.path.join(basedir, "hosts")
+    hosts_file = os.path.join(basedir, "hosts.conf")
     with open(hosts_file, 'w') as f:
         for l in data:
             f.write('    '.join(l))
