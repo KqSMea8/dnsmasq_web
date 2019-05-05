@@ -18,7 +18,7 @@
 
 
     <!-- Optional Bootstrap Theme -->
-<!--
+    <!--
     <link href="https://v3.bootcss.com/dist/css/bootstrap-theme.min.css" rel="stylesheet" id="bs-theme-stylesheet">
 -->
 
@@ -59,7 +59,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                    <a href="/" class="navbar-brand">Dnsmasq</a>
+                <a href="/" class="navbar-brand">Dnsmasq</a>
             </div>
             <nav id="bs-navbar" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
@@ -80,7 +80,7 @@
     </header>
 
 
-<!--    <div class="bs-docs-header" id="content" tabindex="-1">
+    <!--    <div class="bs-docs-header" id="content" tabindex="-1">
     </div>
 -->
 
@@ -106,7 +106,8 @@
                             <div class="box-tools pull-right">
                                 <form class="form-inline">
                                     <div class="form-group">
-                                        <input type="text" id="search_host" class="form-control" name="search" placeholder="search">
+                                        <input type="text" id="search_host" class="form-control" name="search"
+                                            placeholder="search">
                                     </div>
                                     <button type="button" id="btn_search_host"
                                         class="btn btn-primary btn-search">search</button>
@@ -142,7 +143,7 @@
                     </div>
                     <div class="panel-body">
                         <span>
-                        <p>生成并替换线上配置文件。</p>
+                            <p>生成并替换线上配置文件。</p>
                             <button type="button" class="btn btn-xs btn-warning btn-gen-config">生成</button>
                         </span>
                     </div>
@@ -202,7 +203,7 @@
             -->
         </div>
     </div>
-        <div class="modal fade" id="EditHostModal" role="dialog" aria-hidden="true">
+    <div class="modal fade" id="EditHostModal" role="dialog" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -313,11 +314,10 @@
                 </div>
                 <div class="modal-body">
                     <div class="col-center-block">
-                        <p>格式: 域名  ip  备注</p>
-                        <p>例如: www.baidu.com  127.0.0.1  百度官网</p>
+                        <p>格式: 域名 ip 备注</p>
+                        <p>例如: www.baidu.com 127.0.0.1 百度官网</p>
                         <form class="form-horizontal">
-                            <textarea name="batch_hosts" rows="10" style="width: 100%"
-                            placeholder="一行一个"></textarea>
+                            <textarea name="batch_hosts" rows="10" style="width: 100%" placeholder="一行一个"></textarea>
                         </form>
                     </div>
                 </div>
@@ -418,10 +418,12 @@
                                     ' <button type="button" class="btn btn-xs btn-warning btn-status">' +
                                     '状态切换' +
                                     '</button>';
-                                var $status = '<span class="badge" style="background-color:green;">' + row.status + '</span>';
+                                var $status =
+                                    '<span class="badge" style="background-color:green;">' + row
+                                    .status + '</span>';
                             }
 
-                            return  $status + $btn;
+                            return $status + $btn;
                         },
                     },
                     {
@@ -456,30 +458,44 @@
             // 删除
             _table.on('click', '.btn-del', function () {
                 var data = _table.row($(this).parents('tr')).data();
-                $.ajax({
-                    url: "/api/hosts/" + data.id,
-                    type: "DELETE",
-                    dataType: "json",
-                    success: function (result) {
-                        if (result.code == 0) {
-                            _table.ajax.reload();
-                        } else {
-                            swal({
-                                icon: "error",
-                                text: "删除失败! msg: " + result.msg,
-                                button: false,
+
+                swal({
+                    title: "确认删除吗?",
+                    text: "删除域名:" + data.domain + " , 此操作不可逆转!",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true,
+                })
+                    .then((willDelete) => {
+                        if (willDelete) {
+                            $.ajax({
+                                url: "/api/hosts/" + data.id,
+                                type: "DELETE",
+                                dataType: "json",
+                                success: function (result) {
+                                    if (result.code == 0) {
+                                        _table.ajax.reload();
+                                    } else {
+                                        swal({
+                                            icon: "error",
+                                            text: "删除失败! msg: " + result.msg,
+                                            button: false,
+                                        });
+                                    }
+                                },
+                                error: function () {
+                                    swal({
+                                        icon: "error",
+                                        text: "删除失败, code: -200",
+                                        button: false,
+                                    });
+                                }
                             });
                         }
-                    },
-                    error: function () {
-                        swal({
-                            icon: "error",
-                            text: "删除失败, code: -200",
-                            button: false,
-                        });
-                    }
-                });
+                    });
+
             });
+
             // 状态切换
             _table.on('click', '.btn-status', function () {
                 var data = _table.row($(this).parents('tr')).data();
@@ -601,7 +617,7 @@
                 url: "/api/batch_hosts",
                 type: "POST",
                 data: {
-                    "text" : data_text
+                    "text": data_text
                 },
                 dataType: "json",
                 success: function (result) {
@@ -634,9 +650,9 @@
                 dataType: "json",
                 success: function (result) {
                     swal({
-                            icon: "success",
-                            text: "更新成功!",
-                            button: false,
+                        icon: "success",
+                        text: "更新成功!",
+                        button: false,
                     });
                 },
                 error: function () {
@@ -648,7 +664,6 @@
                 }
             });
         });
-
     </script>
 
 
