@@ -1,5 +1,3 @@
-import socket
-import re
 try:
     from flask_wtf import FlaskForm  # Try Flask-WTF v0.13+
 except ImportError:
@@ -7,6 +5,7 @@ except ImportError:
 from models import HostsModel
 from wtforms import PasswordField, StringField
 from wtforms.validators import DataRequired, ValidationError, Length, Email
+import utils
 
 
 class AddHostForm(FlaskForm):
@@ -21,13 +20,8 @@ class AddHostForm(FlaskForm):
             raise ValidationError('domain already exists.')
 
     def validate_ip(self, field):
-        try:
-            socket.inet_pton(socket.AF_INET, field.data)
-        except socket.error:  # not a valid address
-            try:
-                socket.inet_pton(socket.AF_INET6, field.data)
-            except socket.error:  # not a valid address
-                raise ValidationError("ip address is incorrect")
+        if utils.is_valid_address(field.data) is False:
+            raise ValidationError("ip address is incorrect")
 
 
 class EditHostForm(FlaskForm):
@@ -37,11 +31,5 @@ class EditHostForm(FlaskForm):
     status = StringField('status', [])
 
     def validate_ip(self, field):
-        try:
-            socket.inet_pton(socket.AF_INET, field.data)
-        except socket.error:  # not a valid address
-            try:
-                socket.inet_pton(socket.AF_INET6, field.data)
-            except socket.error:  # not a valid address
-                raise ValidationError("ip address is incorrect")
-
+        if utils.is_valid_address(field.data) is False:
+            raise ValidationError("ip address is incorrect")

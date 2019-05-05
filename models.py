@@ -43,7 +43,7 @@ class HostsModel(db.Model):
         """
         query = HostsModel.query.filter(HostsModel.status.notin_([-1]))
         if kw:
-            query = HostsModel.query.filter(HostsModel.domain.like('%{}%'.format(kw)))
+            query = query.filter(HostsModel.domain.like('%{}%'.format(kw)))
         pagination = query.paginate(page, per_page=per_page, error_out=False)
         data = [p.to_json() for p in pagination.items]
         return data, pagination.total

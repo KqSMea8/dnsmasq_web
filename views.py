@@ -1,6 +1,17 @@
+# -*- coding: utf-8 -*-
+
+import os
+import sys
+try:
+    reload(sys)
+    sys.setdefaultencoding("utf-8")
+except:
+    pass
+
 from flask import Blueprint, render_template, redirect, jsonify, request
 from models import HostsModel
 from form import AddHostForm, EditHostForm
+import utils
 
 mod = Blueprint('general', __name__)
 
@@ -55,14 +66,59 @@ def host(id):
         return jsonify({"code": 1, "msg": ""})
 
 
+# 批量导入
+@mod.route('/api/batch_hosts', methods=['POST'])
+def batch_hosts():
+    data_text = request.form["text"].strip()
+    for num, line in enumerate(data_text.split('\n')):
+        line_split = line.split()
+        if len(line_split) < 2:
+            return jsonify({"code": 1, "msg": "%d line, field numbers < 2" % (num + 1)})
+        if utils.is_valid_address(line_split[1]) is False:
+            return jsonify({"code": 1, "msg": "%d line, ip address is incorrect" % (num + 1)})
+
+    for line in data_text.split('\n'):
+        line_split = line.split()
+        # 已存在的域名忽略导入
+        query = HostsModel.query.filter(HostsModel.status.notin_([-1]))
+        if query.filter_by(domain=line_split[0]).count() > 0:
+            continue
+        data = {
+            "domain": line_split[0],
+            "ip": line_split[1],
+            "status": 0
+        }
+        if len(line_split) < 3:
+            data.update({"note": ""})
+        else:
+            data.update({"note": line_split[2]})
+        HostsModel.add_host(data)
+    return jsonify({"code": 0, "msg": "success"})
+
+
+# 生成hosts文件
+@mod.route('/gen/hosts/', methods=['GET'])
+def gen_hosts():
+    query = HostsModel.query.filter(HostsModel.status.notin_([-1, 1])).all()
+    data = [
+        [
+            item.ip,
+            item.domain,
+            "#" + item.note + " " + item.last_seen.strftime("%Y-%m-%d %H:%M:%S") + "\n"
+        ]
+        for item in query
+    ]
+    basedir = os.path.abspath(os.path.dirname(__file__))
+    hosts_file = os.path.join(basedir, "hosts")
+    with open(hosts_file, 'w') as f:
+        for l in data:
+            f.write('    '.join(l))
+    return jsonify({"code": 0, "msg": data})
+
+
 @mod.route('/')
 def index():
     return render_template('index.html')
-
-
-@mod.route('/service')
-def service():
-    return render_template('service.html')
 
 
 @mod.route('/favicon.ico')
