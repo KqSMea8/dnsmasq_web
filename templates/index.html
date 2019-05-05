@@ -74,16 +74,14 @@
                     </li>
                     -->
                 </ul>
+                <ul class="nav navbar-nav navbar-right">
+        <!-- <li><a href="http://mb.bootcss.com" onclick="_hmt.push(['_trackEvent', 'docv3-navbar', 'click', 'themes'])" target="_blank">主题/模板</a></li> -->
+                    <li><a href="#" onclick="logout()"  title="注销登录"> 当前登录用户: {{ current_user.name }}</a></li>
+                </ul>
 
             </nav>
         </div>
     </header>
-
-
-    <!--    <div class="bs-docs-header" id="content" tabindex="-1">
-    </div>
--->
-
 
     <div class="container bs-docs-container">
         <br>
@@ -121,6 +119,7 @@
                                         <th>IP</th>
                                         <th>备注</th>
                                         <th>更新时间</th>
+                                        <th>操作人</th>
                                         <th>状态</th>
                                         <th>操作</th>
                                     </tr>
@@ -403,20 +402,23 @@
                         "data": "note"
                     },
                     {
-                        "data": "last_seen"
+                        "data": "mtime"
+                    },
+                    {
+                        "data": "user"
                     },
                     {
                         "render": function (data, type, row) {
                             if (row.status_id == 1) {
                                 var $btn =
                                     ' <button type="button" class="btn btn-xs btn-success btn-status">' +
-                                    '状态切换' +
+                                    '切换' +
                                     '</button>';
                                 var $status = '<span class="badge">' + row.status + '</span>';
                             } else if (row.status_id == 0) {
                                 var $btn =
                                     ' <button type="button" class="btn btn-xs btn-warning btn-status">' +
-                                    '状态切换' +
+                                    '切换' +
                                     '</button>';
                                 var $status =
                                     '<span class="badge" style="background-color:green;">' + row
@@ -441,9 +443,9 @@
                     var $btnDel = $(
                         '<button type="button" class="btn btn-xs btn-danger btn-del">删除</button>'
                     );
-                    $('td', row).eq(5).append($btnEdit);
-                    $('td', row).eq(5).append("&ensp;");
-                    $('td', row).eq(5).append($btnDel);
+                    $('td', row).eq(6).append($btnEdit);
+                    $('td', row).eq(6).append("&ensp;");
+                    $('td', row).eq(6).append($btnDel);
                 },
             });
             // 修改
@@ -664,6 +666,20 @@
                 }
             });
         });
+
+        function logout() {
+			$.ajax({
+				url: "/api/logout",
+				type: "POST",
+				success: function (data) {
+					window.location.href = "/login";
+				},
+				error: function () {
+					alert("操作出错, 请稍后重试!");
+				},
+			});
+		}
+
     </script>
 
 

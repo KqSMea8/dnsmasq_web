@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 try:
     from flask_wtf import FlaskForm  # Try Flask-WTF v0.13+
 except ImportError:
@@ -33,3 +35,9 @@ class EditHostForm(FlaskForm):
     def validate_ip(self, field):
         if utils.is_valid_address(field.data) is False:
             raise ValidationError("ip address is incorrect")
+
+
+# 用户登录验证表单
+class LoginUserForm(FlaskForm):
+    username = StringField('username', validators=[DataRequired(message='用户名不能为空')])
+    password = PasswordField('password', validators=[DataRequired(message='密码不能为空')])
